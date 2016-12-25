@@ -12,6 +12,7 @@ Here you'll find:
   * [FindBugs Configuration](/Code_Quality/findbugs)  
   * [PMD Configuration](/Code_Quality/pmd) 
 2. [Project Guidelines] (/project_style_guidelines.md) 
+3. [Code style settings] (https://github.com/square/java-code-styles)
 
 ##Licence
 
