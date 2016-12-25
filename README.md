@@ -6,7 +6,6 @@ Welcome to the Android Guidelines repo
 Here you'll find:
 
 1. [Code Quality](/Code_Quality)  
-  * [CheckStyle Configuration](/Code_Quality/checkstyle)  
   * [FindBugs Configuration](/Code_Quality/findbugs)  
   * [PMD Configuration](/Code_Quality/pmd) 
 2. [Project Guidelines] (/project_style_guidelines.md) 
