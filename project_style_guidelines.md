@@ -54,15 +54,9 @@ This convention again makes it really easy to locate the specific layout file th
 
 #### 1.2.2.1 Drawable Files
 
-Drawable resource files should be named using the **ic_** prefix along with the size and color of the asset. For example, white accept icon sized at 24dp would be named:
+Drawable resource files should be named using the **ic_** prefix along with color of the asset. For example, white accept icon be named:
 
-	ic_accept_24dp_white
-
-And a black cancel icon sized at 48dp would be named:
-
-	ic_cancel_48dp_black
-
-We use this naming convention so that a drawable file is recognisable by its name. If the colour and size are not stated in the name, then the developer needs to open the drawable file to find out this information. This saves us a little bit of time :)
+	ic_accept_white
 
 Other drawable files should be named using the corresponding prefix, for example:
 
@@ -77,6 +71,7 @@ Other drawable files should be named using the corresponding prefix, for example
 This convention again helps to group similar items within Android Studio. It also makes it clear as to what the item is used for. For example, naming a resource button_cancel could mean anything! Is this a selector resource or a rounded button background? Correct naming helps to clear any ambiguity that may arise.
 
 When creating selector state resources, they should be named using the corresponding suffix:
+
 
 | State    | Suffix    | Example             |
 |----------|-----------|---------------------|
@@ -118,130 +113,6 @@ All resource file names should be plural, for example:
 
 
 ## 2. Code Guidelines
-
-### 2.1 Java Language Rules
-
-#### 2.1.1 Never ignore exceptions
-
-Avoid not handling exceptions in the correct manner. For example:
-
-	public void setUserId(String id) {
-    	try {
-        	mUserId = Integer.parseInt(id);
-    	} catch (NumberFormatException e) { }
-	}
-
-This gives no information to both the developer and the user, making it harder to debug and could also leave the user confused if something goes wrong. When catching an exception, we should also always log the error to the console for debugging purposes and if necessary alert the user of the issue. For example:
-
-
-	public void setCount(String count) {
-    	try {
-        	count = Integer.parseInt(id);
-    	} catch (NumberFormatException e) {
-    		count = 0;
-        	Log.e(TAG, "There was an error parsing the count " + e);
-        	DialogFactory.showErrorMessage(R.string.error_message_parsing_count);
-    	}
-	}
-
-Here we handle the error appropriately by:
-
-- Showing a message to the user notifying them that there has been an error
-- Setting a default value for the variable if possible
-- Throw an appropriate exception
-
-
-#### 2.1.2 Never catch generic exceptions
-
-
-Catching exceptions generally should not be done:
-
-
-	public void openCustomTab(Context context, Uri uri) {
-    	Intent intent = buildIntent(context, uri);
-    	try {
-        	context.startActivity(intent);
-    	} catch (Exception e) {
-        	Log.e(TAG, "There was an error opening the custom tab " + e);
-    	}
-	}
-
-Why?
-
-*Do not do this. In almost all cases it is inappropriate to catch generic Exception or Throwable (preferably not Throwable because it includes Error exceptions). It is very dangerous because it means that Exceptions you never expected (including RuntimeExceptions like ClassCastException) get caught in application-level error handling. It obscures the failure handling properties of your code, meaning if someone adds a new type of Exception in the code you're calling, the compiler won't help you realize you need to handle the error differently. In most cases you shouldn't be handling different types of exception the same way.* - taken from the Android Code Style Guidelines
-
-Instead, catch the expected exception and handle it accordingly:
-
-	public void openCustomTab(Context context, Uri uri) {
-    	Intent intent = buildIntent(context, uri);
-    	try {
-        	context.startActivity(intent);
-    	} catch (ActivityNotFoundException e) {
-        	Log.e(TAG, "There was an error opening the custom tab " + e);
-    	}
-	}
-
-
-#### 2.1.3 Grouping exceptions
-
-Where exceptions execute the same code, they should be grouped in-order to increase readability and avoid code duplication. For example, where you may do this:
-
-	public void openCustomTab(Context context, @Nullable Uri uri) {
-    	Intent intent = buildIntent(context, uri);
-    	try {
-        	context.startActivity(intent);
-    	} catch (ActivityNotFoundException e) {
-        	Log.e(TAG, "There was an error opening the custom tab " + e);
-    	} catch (NullPointerException e) {
-        	Log.e(TAG, "There was an error opening the custom tab " + e);
-    	} catch (SomeOtherException e) {
-    		// Show some dialog
-        }
-	}
-
-You could do this:
-
-	public void openCustomTab(Context context, @Nullable Uri uri) {
-    	Intent intent = buildIntent(context, uri);
-    	try {
-        	context.startActivity(intent);
-    	} catch (ActivityNotFoundException e | NullPointerException e) {
-        	Log.e(TAG, "There was an error opening the custom tab " + e);
-    	} catch (SomeOtherException e) {
-    		// Show some dialog
-        }
-	}
-
-
-#### 2.1.4 Using try-catch over throw exception
-
-Using try-catch statements improves the readability of the code where the exception is taking place. This is because the error is handled where it occurs, making it easier to both debug or make a change to how the error is handled.
-
-
-#### 2.1.5 Never use Finalizers
-
-*There are no guarantees as to when a finalizer will be called, or even that it will be called at all. In most cases, you can do what you need from a finalizer with good exception handling. If you absolutely need it, define a close() method (or the like) and document exactly when that method needs to be called. See InputStreamfor an example. In this case it is appropriate but not required to print a short log message from the finalizer, as long as it is not expected to flood the logs.* - taken from the Android code style guidelines
-
-
-
-#### 2.1.6 Fully qualify imports
-
-When declaring imports, use the full package declaration. For example:
-
-Don’t do this:
-
-
-    import android.support.v7.widget.*;
-
-Instead, do this 😃
-
-
-    import android.support.v7.widget.RecyclerView;
-
-
-#### 2.1.7 Don't keep unused imports
-
-Sometimes removing code from a class can mean that some imports are no longer needed. If this is the case then the corresponding imports should be removed alongside the code.
 
 ### 2.2 Java Style Rules
 
@@ -397,18 +268,33 @@ For blocks, 4 space indentation should be used:
         count = 1;
     }
 
-Whereas for line wraps, 8 spaces should be used:
+Whereas for line wraps, 4 spaces should be used:
 
 
     String userAboutText =
-            "This is some text about the user and it is pretty long, can you see!"
+        "This is some text about the user and it is pretty long, can you see!"
 
 
 ### 2.2.9 If-Statements
 
 #### 2.2.9.1 Use standard brace style
 
-Braces should always be used on the same line as the code before them. For example, avoid doing this:
+Braces should always be used on the same line as the code before them. Do this:
+
+
+	class SomeClass {
+    	private void someFunction() {
+        	if (isSomething) {
+
+        	} else if (!isSomethingElse) {
+
+        	} else {
+
+        	}
+    	}
+	}
+
+ For example, avoid doing this:
 
 
     class SomeClass
@@ -430,20 +316,7 @@ Braces should always be used on the same line as the code before them. For examp
     	}
 	}
 
-And instead, do this:
 
-
-	class SomeClass {
-    	private void someFunction() {
-        	if (isSomething) {
-
-        	} else if (!isSomethingElse) {
-
-        	} else {
-
-        	}
-    	}
-	}
 
 Not only is the extra line for the space not really necessary, but it makes blocks easier to follow when reading the code.
 
@@ -523,11 +396,10 @@ Annotations should always be used where possible. For example, using the @Nullab
 
 #### 2.2.10.2 Annotation style
 
-Annotations that are applied to a method or class should always be defined in the declaration, with only one per line:
+Annotations that are applied to a method or class should always be defined in the declaration:
 
 
-    @Annotation
-    @AnotherAnnotation
+    @Annotation @AnotherAnnotation
     public class SomeClass {
 
       @SomeAnotation
@@ -581,26 +453,11 @@ Logging should be used to log useful error messages and/or other information tha
 
 | Log                               | Reason      |
 |-----------------------------------|-------------|
-| Log.v(String tag, String message) | verbose     |
-| Log.d(String tag, String message) | debug       |
-| Log.i(String tag, String message) | information |
-| Log.w(String tag, String message) | warning     |
-| Log.e(String tag, String message) | error       |
-
-
-We can set the `Tag` for the log as a `static final` field at the top of the class, for example:
-
-
-    private static final String TAG = MyActivity.class.getName();
-
-All verbose and debug logs must be disabled on release builds. On the other hand - information, warning and error logs should only be kept enabled if deemed necessary.
-
-
-    if (BuildConfig.DEBUG) {
-        Log.d(TAG, "Here's a log message");
-    }
-
-**Note:** Timber is the preferred logging method to be used. It handles the tagging for us, which saves us keeping a reference to a TAG.
+| Timber.v(String message)          | verbose     |
+| Timber.d(String message)          | debug       |
+| Timber.i(String message)          | information |
+| Timber.w(String message)          | warning     |
+| Timber.e(String message)          | error       |
 
 #### 2.2.15 Field Ordering
 
@@ -608,10 +465,10 @@ Any fields declared at the top of a class file should be ordered in the followin
 
 1. Enums
 2. Constants
-3. Dagger Injected fields
-4. Butterknife View Bindings
-5. private global variables
-6. public global variables
+3. public global variables
+4. Dagger Injected fields
+5. Butterknife View Bindings
+6. private global variables
 
 For example:
 
@@ -714,15 +571,15 @@ When defining methods, parameters should be ordered to the following convention:
 
 **Context** parameters always go first and **Callback** parameters always go last.
 
-#### 2.2.18 String constants, naming, and values
-
-When using string constants, they should be declared as final static and use the follow conventions:
-
-[Strings table]
-
-#### 2.2.19 Enums
+#### 2.2.18 Enums
 
 Enums should only be used where actually required. If another method is possible, then that should be the preferred way of approaching the implementation. For example:
+
+Do this:
+
+    private static final int VALUE_ONE = 1;
+    private static final int VALUE_TWO = 2;
+    private static final int VALUE_THREE = 3;
 
 Instead of this:
 
@@ -731,11 +588,6 @@ Instead of this:
         ONE, TWO, THREE
     }
 
-Do this:
-
-    private static final int VALUE_ONE = 1;
-    private static final int VALUE_TWO = 2;
-    private static final int VALUE_THREE = 3;
 
 #### 2.2.20 Arguments in fragments and activities
 
@@ -746,20 +598,20 @@ When we pass data using an Intent or Bundle, the keys for the values must use th
 Passing data to an activity must be done using a reference to a KEY, as defined as below:
 
 
-    private static final String KEY_NAME = "com.your.package.name.to.activity.KEY_NAME";
+    private static final String KEY_NAME = "KEY_NAME";
 
 **Fragment**
 
 Passing data to a fragment must be done using a reference to an EXTRA, as defined as below:
 
 
-    private static final String EXTRA_NAME = "EXTRA_NAME";
+    private static final String KEY_NAME = "KEY_NAME";
 
 When creating new instances of a fragment or activity that involves passing data, we should provide a static method to retrieve the new instance, passing the data as method parameters. For example:
 
 **Activity**
 
-    public static Intent getStartIntent(Context context, Post post) {
+    public static Intent getIntent(Context context, Post post) {
         Intent intent = new Intent(context, CurrentActivity.class);
         intent.putParcelableExtra(EXTRA_POST, post);
         return intent;
@@ -808,17 +660,16 @@ If desirable, you can always break after the `=` sign:
 
 When it comes to method chaining, each method call should be on a new line.
 
-Don’t do this:
-
-
-    Picasso.with(context).load("someUrl").into(imageView);
-
 Instead, do this:
 
 
     Picasso.with(context)
             .load("someUrl")
             .into(imageView);
+
+Don’t do this:
+
+    Picasso.with(context).load("someUrl").into(imageView);
 
 **Long Parameters**
 
@@ -915,37 +766,7 @@ Don’t leave author comments, these aren’t useful and provide no real meaning
 
 ### 2.2.24 Sectioning code
 
-#### 2.2.24.1 Java code
-
-If creating ‘sections’ for code, this should be done using the following approach, like this:
-
-
-    public void method() { }
-
-    public void someOtherMethod() { }
-
-    /********* Mvp Method Implementations  ********/
-
-    public void anotherMethod() { }
-
-    /********* Helper Methods  ********/
-
-    public void someMethod() { }
-
-Not like this:
-
-
-    public void method() { }
-
-    public void someOtherMethod() { }
-
-    // Mvp Method Implementations
-
-    public void anotherMethod() { }
-
-This makes sectioned methods easier to located in a class.
-
-#### 2.2.24.2 Strings file
+#### 2.2.24.1 Strings file
 
 String resources defined within the string.xml file should be section by feature, for example:
 
@@ -959,7 +780,7 @@ String resources defined within the string.xml file should be section by feature
 
 Not only does this help keep the strings file tidy, but it makes it easier to find strings when they need altering.
 
-#### 2.2.24.3 RxJava chaining
+#### 2.2.24.2 RxJava chaining
 
 When chaining Rx operations, every operator should be on a new line, breaking the line before the period `.` . For example:
 
@@ -1035,22 +856,21 @@ The main reason for this is consistency, it also makes it easier to search for v
 
 #### 2.3.2.1 ID naming
 
-All IDs should be prefixed using the name of the element that they have been declared for.
+All ids should be named how as variables in code.
 
-| Element        | Prefix    |
-|----------------|-----------|
-| ImageView      | image_    |
-| Fragment       | fragment_ |
-| RelativeLayout | layout_   |
-| Button         | button_   |
-| TextView       | text_     |
-| View           | view_     |
+| View           | Name              |
+|----------------|-------------------|
+| TextView       | usernameView      |
+| Button         | acceptLoginView   |
+| ImageView      | profileAvatarView |
+| RelativeLayout | profileLayout     |
+| View (divider) | dividerView       
 
 For example:
 
 
     <TextView
-        android:id="@+id/text_username"
+        android:id="@+id/usernameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -1161,13 +981,13 @@ If a class we are testing contains many different methods, then the tests should
 
 ### 2.4.2 Espresso tests
 
-Each Espresso test class generally targets an Activity, so the name given to it should match that of the targeted Activity, again followed by Test. For example:
+Each Espresso test class generally targets an Screen, so the name given to it should match that of the targeted Screen, again followed by Test. This made because you can use fragments, dialog or other android components and also in tests preffered user (Robo pattern by jakewharton)[https://realm.io/news/kau-jake-wharton-testing-robots/] For example:
 
 | Class                | Test Class               |
 |----------------------|--------------------------|
-| MainActivity         | MainActivityTest         |
-| ProfileActivity      | ProfileActivityTest      |
-| DraftsActivity       | DraftsActivityTest       |
+| MainAcivity          | MainScreenTest           |
+| ProfileActivity      | ProfileScreen            |
+| DraftsActivity       | DraftsScreenTest       |
 
 When using the Espresso API, methods should be chained on new lines to make the statements more readable, for example:
 
@@ -1186,15 +1006,25 @@ Chaining calls in this style not only helps us stick to less than 100 characters
 
 Where applicable, versioning that is shared across multiple dependencies should be defined as a variable within the dependencies scope. For example:
 
+Gradle dependencies in dependencies.gradle file:
 
-    final SUPPORT_LIBRARY_VERSION = '23.4.0'
+    ext.versions = [
+         supportLibrary : '23.4.0',
+	 ..
+    ]
+    
+Gradle settings in build.gradle file:
 
-    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
+    apply from: 'dependencies.gradle'
+    
+    ...
+    
+    compile "com.android.support:support-v4:$versions.supportLibrary"
+    compile "com.android.support:recyclerview-v7:$versions.supportLibrary"
+    compile "com.android.support:support-annotations:$versions.supportLibrary"
+    compile "com.android.support:design$versions.supportLibrary"
+    compile "com.android.support:percent:$versions.supportLibrary"
+    compile "com.android.support:customtabs:$versions.supportLibrary"
 
 This makes it easy to update dependencies in the future as we only need to change the version number once for multiple dependencies.
 
@@ -1203,8 +1033,8 @@ This makes it easy to update dependencies in the future as we only need to chang
 Where applicable, dependencies should be grouped by package name, with spaces in-between the groups. For example:
 
 
-    compile "com.android.support:percent:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:percent$versions.supportLibrary"
+    compile "com.android.support:customtabs:$versions.supportLibrary"
 
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.5'
@@ -1219,11 +1049,11 @@ Where applicable, dependencies should be grouped by package name, with spaces in
 
 
     // App Dependencies
-    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-v4:$versions.supportLibrary"
+    compile "com.android.support:recyclerview-v7:$versions.supportLibrary"
 
     // Instrumentation test dependencies
-    androidTestCompile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
+    androidTestCompile "com.android.support:support-annotations:$versions.supportLibrary"
 
     // Unit tests dependencies
     testCompile 'org.robolectric:robolectric:3.0'
