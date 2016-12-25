@@ -1,9 +1,7 @@
 #Android Guidelines
 -------------------
 
-Welcome to the Android Guidelines repo 👋 
-
-This repository is used to house all of our project guidelines for the Buffer App on the Android Platform.  
+Welcome to the Android Guidelines repo 
   
 Here you'll find:
 
