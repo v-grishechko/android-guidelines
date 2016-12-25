@@ -883,11 +883,13 @@ Views that typically are only one per layout, such as a toolbar, can simply be g
 
 #### 2.2.2.2 Strings
 
-All strings should be followed for this template '<DESCRIPTION><WHERE><TEXT>'. Explanation:
+All strings should be followed for this template '\<DESCRIPTION>\<WHERE>\<TEXT>'. Explanation:
   
-  **<DESCRIPTION>** - Differentiate multiple elements in one screen. For example: hint, title, text, button and etc.
-  **<WHERE>** - Describe where it logically belongs in the app. If text common for multiple screens, not use <WHERE>. For example: profile, settings and etc.
-  **<TEXT>** - text in english. For example: submit, cancel, ok and etc.
+  **\<DESCRIPTION>** - Differentiate multiple elements in one screen. For example: hint, title, text, button and etc.
+  
+  **\<WHERE>** - Describe where it logically belongs in the app. If text common for multiple screens, not use <WHERE>. For example: profile, settings and etc.
+  
+  **\<TEXT>** - text in english. For example: submit, cancel, ok and etc.
 
 | Where                 | Description    | Text                      | Resource Name                 |
 |-----------------------|----------------|---------------------------|-------------------------------|
@@ -914,19 +916,21 @@ Two important things to note for String resources:
  - String resources should **always** be defined in the strings file and never hardcoded in layout or class files.
  - Strings should be grouped by order: 
    * WHERE
-    * DESCRIPTION
-  For example:
-  
-    <!-- PROFILE SCREEN !-->
-    <string name="title_profile_avatar">avatar</string>
-    <string name="title_profile_name">name</string>
+     * DESCRIPTION
+     
+ For example:
+ ```xml
+     <!-- PROFILE SCREEN !-->
+     <string name="title_profile_avatar">avatar</string>
+     <string name="title_profile_name">name</string>
     
-    <string name="hint_profile_fullname">Fullname</string>
-    ...
-    <!-- SETTINGS SCREEN !-->
-    <string name="title_settings_main_settings">Main settings</string>
+     <string name="hint_profile_fullname">Fullname</string>
+     ...
+     <!-- SETTINGS SCREEN !-->
+     <string name="title_settings_main_settings">Main settings</string>
     
-    <string name="hint_settings_ip_address">IP address</string>
+     <string name="hint_settings_ip_address">IP address</string>
+ ```
     
 
 #### 2.2.2.3 Styles and themes
