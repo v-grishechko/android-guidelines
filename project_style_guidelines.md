@@ -12,14 +12,14 @@ When contributing work, the project should maintain the following structure:
 
 
 
-	src/androidTest
-	src/test
-	src/commonTest
+	src/functionalTests
+	src/unitTests
+	src/commonTests
 	src/main
 
 
-**androidTest** - Directory containing functional tests    
-**test** - Directory containing unit tests  
+**functionalTests** - Directory containing functional tests    
+**unitTests** - Directory containing unit tests  
 **commonTest** - Directory containing shared test code for AndroidTest & Test  
 **main** - Directory containing application code
 
@@ -43,7 +43,7 @@ Any classes extending an Android framework component should **always** end with 
 
 We use UpperCamelCase as this helps to seperate the words used to create the name, making it easier to read. Naming classes to end with the framework component makes it super clear as to what the class is used for. For example, if you're looking to make changes to the RegistrationDialog then this naming convention makes it really easy to locate that class.
 
-#### 1.2.1 Resource Files
+#### 1.2.2 Resource Files
 
 When naming resource files you should be sure to name them using lowercase letters and underscores instead of spaces, for example:
 
@@ -94,6 +94,7 @@ When naming layout files, they should be named starting with the name of the And
 | Dialog           | RateDialog      | dialog_rate       |
 | Widget           | UserProfileView | view_user_profile |
 | AdapterView Item | N/A             | item_follower     |
+| Partial view     | N/A             | layout_avatar
 
 **Note:** If you create a layout using the merge tag then the layout_ prefix should be used.
 
@@ -114,9 +115,9 @@ All resource file names should be plural, for example:
 
 ## 2. Code Guidelines
 
-### 2.2 Java Style Rules
+### 2.1 Java Style Rules
 
-#### 2.2.1 Field definition and naming
+#### 2.1.1 Field definition and naming
 
 All fields should be declared at the top of the file, following these rules:
 
@@ -162,7 +163,7 @@ why not just give the field a meaningful name in the first place, rather than le
 That's much better!
 
 
-#### 2.2.1.2 View Field Naming
+#### 2.1.1.2 View Field Naming
 
 When naming fields that reference views, the name of the view should be the last word in the name. For example:
 
@@ -171,13 +172,13 @@ When naming fields that reference views, the name of the view should be the last
 | TextView       | usernameView      |
 | Button         | acceptLoginView   |
 | ImageView      | profileAvatarView |
-| RelativeLayout | profileLayout     |
+| RelativeLayout | profileContainer  |
 
-We name views in this way so that we can easily identify what the field corresponds to. For example, having a field named **user** is extremely ambiguous - giving it the name usernameView, userAvatarView or userProfieLayout helps to make it clear  exactly what view the field corresponds with.
+We name views in this way so that we can easily identify what the field corresponds to. For example, having a field named **user** is extremely ambiguous - giving it the name usernameView, userAvatarView or userProfileContainer helps to make it clear  exactly what view the field corresponds with.
 
 Previously, the names for views often ended in the view type (e.g acceptLoginButton) but quite often views change and it's easy to forgot to go back to java classes and update variable names.
 
-#### 2.2.2 Avoid naming with container types
+#### 2.1.2 Avoid naming with container types
 
 Leading on from the above, we should also avoid the use of container type names when creating variables for collections. For example, say we have an arraylist containing a list of userIds:
 
@@ -192,7 +193,7 @@ Don't:
 If and when container names change in the future, the naming of these can often get forgotten about - and just like view naming, it's not entirely necessary. Correct naming of the container itself should provide enough information for what it is.
 
 
-#### 2.2.3 Avoid similar naming
+#### 2.1.3 Avoid similar naming
 
 Naming variables, method and / or classes with similar names can make it confusing for other developers reading over your code. For example:
 
@@ -202,7 +203,7 @@ Naming variables, method and / or classes with similar names can make it confusi
 
 Distinguishing the difference between these at a first glance can be hard to understand what is what. Naming these in a clearer way can make it easier for developers to navigate the fields in your code.
 
-#### 2.2.4 Number series naming
+#### 2.1.4 Number series naming
 
 When Android Studio auto-generates code for us, it's easy to leave things as they are - even when it generate horribly named parameters! For example, this isn't very nice:
 
@@ -214,7 +215,7 @@ It's hard to understand what these parameters do without reading the code. Inste
 
 That makes it much easier to understand! Now we'll be able to read the code following the parameter with a much clearer understanding 🙂
 
-#### 2.2.5 Pronouncable names
+#### 2.1.5 Pronouncable names
 
 When naming fields, methods and classes they should:
 
@@ -227,7 +228,7 @@ When naming fields, methods and classes they should:
 - Not use Hungarian notation: Hungarian notation goes against the three points made above, so it should never be used!
 
 
-#### 2.2.6 Treat acronyms as words
+#### 2.1.6 Treat acronyms as words
 
 Any acronyms for class names, variable names etc should be treated as words - this applies for any capitalisation used for any of the letters. For example:
 
@@ -240,7 +241,7 @@ Any acronyms for class names, variable names etc should be treated as words - th
 | generateXmlFile | generateXMLFile |
 
 
-#### 2.2.7 Avoid justifying variable declarations
+#### 2.1.7 Avoid justifying variable declarations
 
 Any declaration of variables should not use any special form of alignment, for example:
 
@@ -258,7 +259,7 @@ Avoid doing this:
 
 This creates a stream of whitespace which is known to make text difficult to read for certain learning difficulties.
 
-#### 2.2.8 Use spaces for indentation
+#### 2.1.8 Use spaces for indentation
 
 
 For blocks, 4 space indentation should be used:
@@ -275,9 +276,9 @@ Whereas for line wraps, 4 spaces should be used:
         "This is some text about the user and it is pretty long, can you see!"
 
 
-### 2.2.9 If-Statements
+### 2.1.9 If-Statements
 
-#### 2.2.9.1 Use standard brace style
+#### 2.1.9.1 Use standard brace style
 
 Braces should always be used on the same line as the code before them. Do this:
 
@@ -320,7 +321,7 @@ Braces should always be used on the same line as the code before them. Do this:
 
 Not only is the extra line for the space not really necessary, but it makes blocks easier to follow when reading the code.
 
-#### 2.2.9.2 Inline if-clauses
+#### 2.1.9.2 Inline if-clauses
 
 Sometimes it makes sense to use a single line for if statements. For example:
 
@@ -331,7 +332,7 @@ However, it only works for simple operations. Something like this would be bette
 
     if (user == null) throw new IllegalArgumentExeption("Oops, user object is required.");
 
-#### 2.2.9.3 Nested if-conditions
+#### 2.1.9.3 Nested if-conditions
 
 Where possible, if-conditions should be combined to avoid over-complicated nesting. For example:
 
@@ -353,7 +354,7 @@ Try to avoid:
 
 This makes statements easier to read and removes the unnecessary extra lines from the nested clauses.
 
-#### 2.2.9.4 Ternary Operators
+#### 2.1.9.4 Ternary Operators
 
 Where appropriate, ternary operators can be used to simplify operations.
 
@@ -373,9 +374,9 @@ and takes up far fewer lines of code than this:
 
 **Note:** There are some times when ternary operators should not be used. If the if-clause logic is complex or a large number of characters then a standard brace style should be used.
 
-### 2.2.10 Annotations
+### 2.1.10 Annotations
 
-#### 2.2.10.1 Annotation practices
+#### 2.1.10.1 Annotation practices
 
 Taken from  the Android code style guide:
 
@@ -394,7 +395,7 @@ Annotations should always be used where possible. For example, using the @Nullab
 
     private void getName(@Nullable String name) { }
 
-#### 2.2.10.2 Annotation style
+#### 2.1.10.2 Annotation style
 
 Annotations that are applied to a method or class should always be defined in the declaration:
 
@@ -420,18 +421,18 @@ When using the annotations on fields, you should ensure that the annotation rema
 
 We do this as it makes the statement easier to read. For example, the statement '@Inject SomeComponent mSomeName' reads as 'inject this component with this name'.
 
-#### 2.2.11 Limit variable scope
+#### 2.1.11 Limit variable scope
 
 The scope of local variables should be kept to a minimum (Effective Java Item 29). By doing so, you increase the readability and maintainability of your code and reduce the likelihood of error. Each variable should be declared in the innermost block that encloses all uses of the variable.
 
 Local variables should be declared at the point they are first used. Nearly every local variable declaration should contain an initializer. If you don't yet have enough information to initialize a variable sensibly, you should postpone the declaration until you do. - taken from the Android code style guidelines
 
 
-#### 2.2.12 Unused elements
+#### 2.1.12 Unused elements
 
 All unused **fields**, **imports**, **methods** and **classes** should be removed from the code base unless there is any specific reasoning behind keeping it there.
 
-#### 2.2.13 Order Import Statements
+#### 2.1.13 Order Import Statements
 
 Because we use Android Studio, so imports should always be ordered automatically. However, in the case that they may not be, then they should be ordered as follows:
 
@@ -446,7 +447,7 @@ Because we use Android Studio, so imports should always be ordered automatically
 - Imports should be alphabetically ordered within each grouping, with capital letters before lower case letters (e.g. Z before a)
 - There should be a blank line between each major grouping (android, com, JUnit, net, org, java, javax)
 
-#### 2.2.14 Logging
+#### 2.1.14 Logging
 
 Logging should be used to log useful error messages and/or other information that may be useful during development.
 
@@ -459,19 +460,22 @@ Logging should be used to log useful error messages and/or other information tha
 | Timber.w(String message)          | warning     |
 | Timber.e(String message)          | error       |
 
-#### 2.2.15 Field Ordering
+#### 2.1.15 Field Ordering
 
 Any fields declared at the top of a class file should be ordered in the following order:
 
-1. Enums
-2. Constants
-3. public global variables
-4. Dagger Injected fields
-5. Butterknife View Bindings
+1. Butterknife View Bindings
+2. Enums
+3. Constants
+4. public global variables
+5. Dagger Injected fields
 6. private global variables
 
 For example:
 
+        @BindView(R.id.text_name) TextView nameText;
+	@BindView(R.id.image_photo) ImageView photoImage;
+	
 	public static enum {
 		ENUM_ONE, ENUM_TWO
 	}
@@ -480,19 +484,16 @@ For example:
 	public static final int COUNT_USER = 0;
 
 	@Inject SomeAdapter someAdapter;
-
-	@BindView(R.id.text_name) TextView nameText;
-	@BindView(R.id.image_photo) ImageView photoImage;
-
+	
+	public int someCount;
+	public String someString;
+	
 	private int userCount;
 	private String errorMessage;
 
-	public int someCount;
-	public String someString;
-
 Using this ordering convention helps to keep field declarations grouped, which increases both the locating of and readability of said fields.
 
-#### 2.2.16 Class member ordering
+#### 2.1.16 Class member ordering
 
 
 To improve code readability, it’s important to organise class members in a logical manner. The following order should be used to achieve this:
@@ -560,7 +561,7 @@ Any lifecycle methods used in Android framework classes should be ordered in the
 
     }
 
-#### 2.2.17 Method parameter ordering
+#### 2.1.17 Method parameter ordering
 
 When defining methods, parameters should be ordered to the following convention:
 
@@ -571,7 +572,7 @@ When defining methods, parameters should be ordered to the following convention:
 
 **Context** parameters always go first and **Callback** parameters always go last.
 
-#### 2.2.18 Enums
+#### 2.1.18 Enums
 
 Enums should only be used where actually required. If another method is possible, then that should be the preferred way of approaching the implementation. For example:
 
@@ -580,54 +581,57 @@ Do this:
     private static final int VALUE_ONE = 1;
     private static final int VALUE_TWO = 2;
     private static final int VALUE_THREE = 3;
+    
+Or if you can, use android annotations for constants. For example:
+
+    @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
+        public @interface NavigationMode {}
+        public static final int NAVIGATION_MODE_STANDARD = 0;
+        public static final int NAVIGATION_MODE_LIST = 1;
+        public static final int NAVIGATION_MODE_TABS = 2;
+        ...
+        public abstract void setNavigationMode(@NavigationMode int mode);
 
 Instead of this:
-
 
     public enum SomeEnum {
         ONE, TWO, THREE
     }
 
 
-#### 2.2.20 Arguments in fragments and activities
+#### 2.1.20 Arguments in fragments and activities
 
-When we pass data using an Intent or Bundle, the keys for the values must use the conventions defined below:
+Move all defenitions of keys of intent extra or keys of bundle in separate class and use in activities, fragments or another android component. For example:
 
+    class Keys {
+       public static final String KEY_NAME = "KEY_NAME";
+    }
+    
 **Activity**
-
-Passing data to an activity must be done using a reference to a KEY, as defined as below:
-
-
-    private static final String KEY_NAME = "KEY_NAME";
-
-**Fragment**
-
-Passing data to a fragment must be done using a reference to an EXTRA, as defined as below:
-
-
-    private static final String KEY_NAME = "KEY_NAME";
-
-When creating new instances of a fragment or activity that involves passing data, we should provide a static method to retrieve the new instance, passing the data as method parameters. For example:
-
-**Activity**
-
+   
+    import static com.guidelines.Keys.KEY_NAME;
+    ...
     public static Intent getIntent(Context context, Post post) {
         Intent intent = new Intent(context, CurrentActivity.class);
-        intent.putParcelableExtra(EXTRA_POST, post);
+        intent.putParcelableExtra(KEY_NAME, post);
         return intent;
     }
 
 **Fragment**
 
+    import static com.guidelines.Keys.KEY_NAME;
+    ...
     public static PostFragment newInstance(Post post) {
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARGUMENT_POST, post);
+        args.putParcelable(KEY_NAME, post);
         fragment.setArguments(args)
         return fragment;
     }
+    
+It's approach more clear than you declare keys inside different classes, because for example, you can use same key in different places.
 
-#### 2.2.21 Line Length Limit
+#### 2.1.21 Line Length Limit
 
 Code lines should exceed no longer than 100 characters, this makes the code more readable. Sometimes to achieve this, we may need to:
 
@@ -638,7 +642,7 @@ Code lines should exceed no longer than 100 characters, this makes the code more
 
 **Note:** For code comments and import statements it’s ok to exceed the 100 character limit.
 
-#### 2.2.21.1 Line-wrapping techniques
+#### 2.1.21.1 Line-wrapping techniques
 
 When it comes to line-wraps, there’s a few situations where we should be consistent in the way we format code.
 
@@ -690,7 +694,7 @@ And when calling that method we should break after the comma of each parameter:
             "thisIsSomeLongTextItsQuiteLongIsntIt");
 
 
-#### 2.2.22 Method spacing
+#### 2.1.22 Method spacing
 
 There only needs to be a single line space between methods in a class, for example:
 
@@ -726,15 +730,15 @@ Not this:
         // Code
     }
 
-### 2.2.23 Comments
+### 2.1.23 Comments
 
-#### 2.2.23.1 Inline comments
+#### 2.1.23.1 Inline comments
 
 Where necessary, inline comments should be used to provide a meaningful description to the reader on what a specific piece of code does. They should only be used in situations where the code may be complex to understand. In most cases however, code should be written in a way that it easy to understand without comments 🙂
 
 **Note:** Code comments do not have to, but should try to, stick to the 100 character rule.
 
-#### 2.2.23.2 JavaDoc Style Comments
+#### 2.1.23.2 JavaDoc Style Comments
 
 
 Whilst a method name should usually be enough to communicate a methods functionality, it can sometimes help to provide JavaDoc style comments. This helps the reader to easily understand the methods functionality, as well as the purpose of any parameters that are being passed into the method.
@@ -747,7 +751,7 @@ Whilst a method name should usually be enough to communicate a methods functiona
      * @param userId The user id of the user that is to be authenticated.
      */
 
-#### 2.2.23.3 Class comments
+#### 2.1.23.3 Class comments
 
 When creating class comments they should be meaningful and descriptive, using links where necessary. For example:
 
@@ -764,15 +768,15 @@ Don’t leave author comments, these aren’t useful and provide no real meaning
       * Created By Joe 18/06/2016
       */
 
-### 2.2.24 Sectioning code
+### 2.1.24 Sectioning code
 
-#### 2.2.24.1 Strings file
+#### 2.1.24.1 Strings file
 
 String resources defined within the string.xml file should be section by feature, for example:
 
 
     // User Profile Activity
-    <string name="button_save">Save</string>
+    <string name="profile_save">Save</string>
     <string name="button_cancel">Cancel</string>
 
     // Settings Activity
@@ -821,9 +825,9 @@ Do this:
     public void onSubmitButtonClick() { }
 
 
-## 2.3 XML Style Rules
+## 2.2 XML Style Rules
 
-### 2.3.1 Use self=-closing tags
+### 2.2.1 Use self=-closing tags
 
 When a View in an XML layout does not have any child views, self-closing tags should be used.
 
@@ -845,7 +849,7 @@ Don’t:
     </ImageView>
 
 
-### 2.3.2 Resource naming
+### 2.2.2 Resource naming
 
 All resource names and IDs should be written using lowercase and underscores, for example:
 
@@ -854,7 +858,7 @@ All resource names and IDs should be written using lowercase and underscores, fo
 
 The main reason for this is consistency, it also makes it easier to search for views within layout files when it comes to altering the contents of the file.
 
-#### 2.3.2.1 ID naming
+#### 2.2.2.1 ID naming
 
 All ids should be named how as variables in code.
 
@@ -877,33 +881,55 @@ For example:
 
 Views that typically are only one per layout, such as a toolbar, can simply be given the id of it's view type. E.g.```toolbar```.
 
-#### 2.3.2.2 Strings
+#### 2.2.2.2 Strings
 
-All string names should begin with a prefix for the part of the application that they are being referenced from. For example:
+All strings should be followed for this template '<DESCRIPTION><WHERE><TEXT>'. Explanation:
+  
+  **<DESCRIPTION>** - Differentiate multiple elements in one screen. For example: hint, title, text, button and etc.
+  **<WHERE>** - Describe where it logically belongs in the app. If text common for multiple screens, not use <WHERE>. For example: profile, settings and etc.
+  **<TEXT>** - text in english. For example: submit, cancel, ok and etc.
 
-| Screen                | String         | Resource Name             |
-|-----------------------|----------------|---------------------------|
-| Registration Fragment | “Register now” | registration_register_now |
-| Sign Up Activity      | “Cancel”       | sign_up_cancel            |
-| Rate App Dialog       | “No thanks”    | rate_app_no_thanks        |
+| Where                 | Description    | Text                      | Resource Name                 |
+|-----------------------|----------------|---------------------------|-------------------------------|
+| Registration Fragment | Button         | Submit                    | button_registration_submit    | 
+| Sign Up Activity      | Hint           | Name                      | hint_sign_up_name             |
+| Rate App Dialog       | Title          | Rate us please            | title_rateapp_rate_us_please  |
 
-If it’s not possible to name the referenced like the above, we can use the following rules:
+Full list of descriptions:
 
-| Prefix  | Description                                  |
-|---------|----------------------------------------------|
-| error_  | Used for error messages                      |
-| title_  | Used for dialog titles                       |
-| action_ | Used for option menu actions                 |
-| msg_    | Used for generic message such as in a dialog |
-| label_  | Used for activity labels                     |
+| Prefix           | Description                                  |
+|------------------|----------------------------------------------|
+| error_message_   | Used for error messages                      |
+| title_           | Used for titles                              |
+| action_          | Used for option menu actions                 |
+| text_            | Used for generic message such as in a dialog |
+| label_           | Used for activity labels                     |
+| menu_            | Used for items of menu                       |
+| button_          | Used for buttons
 
 Two important things to note for String resources:
 
  - String resources should never be reused across screens. This can cause issues when it comes to changing a string for a specific screen. It saves future complications by having a single string for each screens usage.
 
  - String resources should **always** be defined in the strings file and never hardcoded in layout or class files.
+ - Strings should be grouped by order: 
+   * WHERE
+    * DESCRIPTION
+  For example:
+  
+    <!-- PROFILE SCREEN !-->
+    <string name="title_profile_avatar">avatar</string>
+    <string name="title_profile_name">name</string>
+    
+    <string name="hint_profile_fullname">Fullname</string>
+    ...
+    <!-- SETTINGS SCREEN !-->
+    <string name="title_settings_main_settings">Main settings</string>
+    
+    <string name="hint_settings_ip_address">IP address</string>
+    
 
-#### 2.3.2.3 Styles and themes
+#### 2.2.2.3 Styles and themes
 
 When defining both Styles & Themes, they should be named using UpperCamelCase. For example:
 
@@ -915,7 +941,7 @@ When defining both Styles & Themes, they should be named using UpperCamelCase. F
     TitleTextStyle
 
 
-### 2.3.3 Attributes ordering
+### 2.2.3 Attributes ordering
 
 Ordering attributes not only looks tidy but it helps to make it quicker when looking for attributes within layout files. As a general rule,
 
@@ -946,9 +972,9 @@ Note: This formatting can be carried out by using the format feature in android 
 Doing this makes it easy to navigate through XML attributes when it comes to making changes to layout files.
 
 
-## 2.4 Tests style rules
+## 2.3 Tests style rules
 
-### 2.4.1 Unit tests
+### 2.3.1 Unit tests
 
 Any Unit Test classes should be written to match the name of the class that the test are targeting, followed by the Test suffix. For example:
 
@@ -979,9 +1005,9 @@ If a class we are testing contains many different methods, then the tests should
     DatabaseHelperPostsTest
     DatabaseHelperDraftsTest
 
-### 2.4.2 Espresso tests
+### 2.3.2 Espresso tests
 
-Each Espresso test class generally targets an Screen, so the name given to it should match that of the targeted Screen, again followed by Test. This made because you can use fragments, dialog or other android components and also in tests preffered user (Robo pattern by jakewharton)[https://realm.io/news/kau-jake-wharton-testing-robots/] For example:
+Each Espresso test class generally targets an Screen, so the name given to it should match that of the targeted Screen, again followed by Test. This made because you can use fragments, dialog or other android components and also in tests preffer use (robo pattern by jakewharton)[https://realm.io/news/kau-jake-wharton-testing-robots/] For example:
 
 | Class                | Test Class               |
 |----------------------|--------------------------|
